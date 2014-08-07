@@ -11,7 +11,7 @@
 
 		<div class="title">
 			<h1>Simple Stock Exchange</h1>
-			<input type="text" name="mySymbol" placeholder="Enter Symbol" ng-model="symbol">
+			<input ng-change="reset()" type="text" name="mySymbol" placeholder="Enter Symbol" ng-model="symbol">
 			<button type="button" ng-click="findSymbol()">Lookup</button>
 		</div>
 
@@ -19,11 +19,13 @@
 			<p><span ng-hide="symbol">No Stock Selected</span><span ng-bind="name"></span> <span ng-show="symbol">(</span><span ng-bind="symbol"></span><span ng-show="symbol">)</span></p>
 			<br/>
 			<br/>
-			<p class="inline">Bid <br><span ng-bind="bid"></span></p>
-			<p class="inline">Ask <br><span ng-bind="ask"></span></p>
+			<p class="inline bid">Bid <br><br><span ng-bind="bid"></span></p>
+			<p class="inline ask">Ask <br><br><span ng-bind="ask"></span></p>
 
 			<br/>
-			<input type="number" name="quanity" placeholder="Quanity" ng-model="quanity">
+			<br/>
+			<br/>
+			<input class="quanity" type="number" name="quanity" placeholder="Quanity" ng-model="quanity">
 			<button type="button" ng-click="buyStock()">Buy</button>
 			<button type="button" ng-click="sellStock()">Sell</button>
 		</div>
@@ -57,7 +59,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-cookies.min.js"></script>
-	
+
 	<script src="js/app.js"></script>
 </body>
 </html>

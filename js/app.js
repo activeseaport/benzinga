@@ -2,6 +2,7 @@ var app = angular.module('myApp', ['ngCookies']);
 
 app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore) {
   
+
 	$scope.cash = 100000.00;
 	$scope.ask = 0.00; 
 	$scope.bid = 0.00;
@@ -12,6 +13,11 @@ app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore
 	$scope.newStock = true;
 	$scope.message = "";
 
+	$scope.reset = function (){
+		$scope.ask = 0.00; 
+		$scope.bid = 0.00;
+		$scope.message = "";
+	}
 
 
   $scope.findSymbol = function(){
@@ -73,6 +79,7 @@ app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore
 
 		if($scope.myPortfolio.length && $scope.quanity > 0){
 			$scope.findSymbol();
+			$scope.newStock = true;
 
 			for (i = 0; i < $scope.myPortfolio.length; i++) {
 			    if($scope.myPortfolio[i].mySmbol == $scope.symbol){
@@ -80,6 +87,11 @@ app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore
 			    	$scope.newStock = false;
 			    	$entry = i;
 			    }
+			}
+
+			if($scope.newStock){
+				$scope.message = "You don't have this stock to sell";
+				return;
 			}
 
 			$scope.cash += $scope.bid * $scope.quanity;
@@ -106,7 +118,7 @@ app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore
 			console.log($scope.myPortfolio);
 		} else {
 			$scope.updateCookie();
-			$scope.message = "You'll need to buy stock before you can trade them";
+			$scope.message = "You'll need to buy or select a stock before you can trade them";
 		}
 		
 	}
@@ -143,10 +155,6 @@ app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore
 
 	
   
-
-  
-  // Removing a cookie
-  //$cookieStore.remove('myFavorite');
 
 
 });
