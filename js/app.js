@@ -1,6 +1,6 @@
-var app = angular.module('myApp', []);
+var app = angular.module('myApp', ['ngCookies']);
 
-app.controller('stockPortfolio', function ($scope, $http) {
+app.controller('stockPortfolio', function ($scope, $http, $cookies, $cookieStore) {
   
 	$scope.cash = 100000.00;
 	$scope.ask = 0.00; 
@@ -11,6 +11,8 @@ app.controller('stockPortfolio', function ($scope, $http) {
 	$scope.myPortfolio = [];
 	$scope.newStock = true;
 	$scope.message = "";
+
+
 
   $scope.findSymbol = function(){
   	if($scope.symbol){
@@ -36,7 +38,7 @@ app.controller('stockPortfolio', function ($scope, $http) {
   }
 
 	$scope.buyStock = function(){
-		if($scope.quanity){
+		if($scope.quanity && $scope.symbol){
 
 			for (i = 0; i < $scope.myPortfolio.length; i++) {
 			    if($scope.myPortfolio[i].mySmbol == $scope.symbol){
@@ -54,9 +56,11 @@ app.controller('stockPortfolio', function ($scope, $http) {
 				$scope.myPortfolio[$entry].quanity += Number($scope.quanity);
 			}
 
+			$scope.updateCookie();
 			$scope.newStock = true;
 			$scope.message = "";
 		} else {
+			$scope.updateCookie();
 			$scope.message = "Please type a quanity";
 		}
 		
@@ -91,6 +95,7 @@ app.controller('stockPortfolio', function ($scope, $http) {
 					if($scope.myPortfolio[$entry].quanity == 0){
 						$scope.myPortfolio.splice($entry, 1);
 					}
+					$scope.updateCookie();
 				} else{
 					$scope.message = "you dont have enough quanity to sell that much";
 				}
@@ -100,6 +105,7 @@ app.controller('stockPortfolio', function ($scope, $http) {
 			$scope.newStock = true;
 			console.log($scope.myPortfolio);
 		} else {
+			$scope.updateCookie();
 			$scope.message = "You'll need to buy stock before you can trade them";
 		}
 		
@@ -110,6 +116,37 @@ app.controller('stockPortfolio', function ($scope, $http) {
 		$scope.findSymbol();
 	}
 
+
+	$scope.cookieData = $scope.myPortfolio;
+
+
+	$scope.getCookie = function(){
+  	var myCashBalance = $cookieStore.get('myCashBalance');
+  	var myStockPortfolio = $cookieStore.get('myStockPortfolio');
+  	if(myCashBalance){
+  		 $scope.cash = myCashBalance;
+  	}
+  	if(myStockPortfolio){
+  		 $scope.myPortfolio = JSON.parse(myStockPortfolio);
+  	}
+
+  	console.log(myCashBalance, myStockPortfolio);
+	}
+
+	$scope.getCookie();
+
+	$scope.updateCookie = function(){
+  	$cookieStore.put('myCashBalance', $scope.cash);
+  	$cookieStore.put('myStockPortfolio', JSON.stringify($scope.myPortfolio));
+  	$scope.getCookie();
+	}
+
+	
+  
+
+  
+  // Removing a cookie
+  //$cookieStore.remove('myFavorite');
 
 
 });

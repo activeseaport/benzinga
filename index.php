@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 	<head>
+		<title>Benzinga Challenge</title>
 		<link rel="stylesheet/less" type="text/css" href="css/style.less" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
 	</head>
@@ -35,15 +36,16 @@
 			<br/>
 			<ul>
 				<li>
-					<span>Company</span>
-					<span>Quanity</span>
-					<span>Price Paid</span>
-					<span></span>
+					<span class="label">Company</span>
+					<span class="label">Quanity</span>
+					<span class="label">Price Paid</span>
+					<span class="label">&nbsp;</span>
 				</li>
+				<hr/>
 				<li ng-repeat="portfolio in myPortfolio">
-					<span>{{portfolio.company}}</span>
-					<span>{{portfolio.quanity}}</span>
-					<span>{{portfolio.askprice}}</span>
+					<span class="border">{{portfolio.company}}</span>
+					<span class="border">{{portfolio.quanity}}</span>
+					<span class="border">{{portfolio.askprice}}</span>
 					<button type="button" ng-click="viewStock(portfolio.mySmbol)">View Stock</button>
 				</li>
 			</ul>
@@ -54,6 +56,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-cookies.min.js"></script>
+	
 	<script src="js/app.js"></script>
 </body>
 </html>
