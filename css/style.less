@@ -1,4 +1,77 @@
 *{
-	padding: 0px;
 	margin: 0px;
+	list-style: none;
+}
+body{
+	font-family: helvetica;
+	padding: 14px;
+	font-size: 12px;
+
+	.container{
+		margin: 0px auto;
+		max-width: 777px;
+		min-height: 382px;
+		border: 2px solid #000;
+		position: relative;
+		
+		.message{
+			position: absolute;
+			bottom: 20px;
+			width: 100%;
+			color: red;
+			text-align: center;
+		}
+
+		.inline{
+			display: inline-block;
+			vertical-align: top;
+		}
+
+
+		.title{
+			min-height: 50px;
+			border-bottom: 2px solid #000;
+			margin-bottom: 32px;
+
+			h1{
+				font-size: 12px;
+				padding: 16px 0px 0px 20px;
+				display: inline-block;
+				margin-right: 50%;
+			}
+			input{
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+			}
+		}
+
+		.bidControls{
+			vertical-align: top;
+			max-width: 290px;
+			width: 100%;
+			display: inline-block;
+			margin-left: 2%;
+			margin-right: 6%;
+		}
+
+		.portfolioControls{
+			vertical-align: top;
+			max-width: 400px;
+			width: 100%;
+			display: inline-block;
+			.cash{
+				float: right;
+			}
+			ul{
+				padding: 0px;
+				li{
+					span{
+						display: inline-block;
+						width: 25%;
+					}
+				}
+			}
+		}
+	}
 }

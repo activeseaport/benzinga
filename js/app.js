@@ -1,15 +1,16 @@
-var app = angular.module('myApp', [])
+var app = angular.module('myApp', []);
 
 app.controller('stockPortfolio', function ($scope, $http) {
   
-
 	$scope.cash = 100000.00;
-	$scope.ask = 0; 
-	$scope.bid = 0;
+	$scope.ask = 0.00; 
+	$scope.bid = 0.00;
 	$scope.quanity;
+	$scope.symbol = "";
 	$scope.name = "";
 	$scope.myPortfolio = [];
-	$newStock = true;
+	$scope.newStock = true;
+	$scope.message = "";
 
   $scope.findSymbol = function(){
   	if($scope.symbol){
@@ -20,12 +21,17 @@ app.controller('stockPortfolio', function ($scope, $http) {
 	    		$scope.ask = data.ask; 
 					$scope.bid = data.bid;
 	    		$scope.name = data.name;
+	    		$scope.message = "";
+	    	} else {
+	    		$scope.message = "Stock symbol not found";
 	    	}
 	    }).
 	    error(function(data, status, headers, config) {
 	      // called asynchronously if an error occurs
 	      // or server returns response with an error status.
 	    });
+  	} else{
+  		$scope.message = "Please type stock symbol";
   	}
   }
 
@@ -35,22 +41,23 @@ app.controller('stockPortfolio', function ($scope, $http) {
 			for (i = 0; i < $scope.myPortfolio.length; i++) {
 			    if($scope.myPortfolio[i].mySmbol == $scope.symbol){
 			    	console.log($scope.myPortfolio[i].mySmbol);
-			    	$newStock = false;
+			    	$scope.newStock = false;
 			    	$entry = i;
 			    }
 			}
 
-			$scope.paidPrice = $scope.ask;
-			$scope.cash = $scope.cash - $scope.paidPrice;
+			$scope.cash -= $scope.ask * $scope.quanity;
 
-			if($newStock){
-				$scope.myPortfolio.push({mySmbol: $scope.symbol, company : $scope.name, quanity: parseInt($scope.quanity), askprice: parseInt($scope.ask)});
+			if($scope.newStock){
+				$scope.myPortfolio.push({mySmbol: $scope.symbol, company : $scope.name, quanity: Number($scope.quanity), askprice: Number($scope.ask)});
 			} else {
-				$scope.myPortfolio[$entry].quanity += parseInt($scope.quanity);
+				$scope.myPortfolio[$entry].quanity += Number($scope.quanity);
 			}
 
-			$newStock = true;
-			console.log($scope.myPortfolio);
+			$scope.newStock = true;
+			$scope.message = "";
+		} else {
+			$scope.message = "Please type a quanity";
 		}
 		
 	}
@@ -58,35 +65,42 @@ app.controller('stockPortfolio', function ($scope, $http) {
 
 
 	$scope.sellStock = function(){
-		if($scope.myPortfolio.length && $scope.quanity){
+		
+
+		if($scope.myPortfolio.length && $scope.quanity > 0){
+			$scope.findSymbol();
 
 			for (i = 0; i < $scope.myPortfolio.length; i++) {
 			    if($scope.myPortfolio[i].mySmbol == $scope.symbol){
 			    	console.log($scope.myPortfolio[i].mySmbol);
-			    	$newStock = false;
+			    	$scope.newStock = false;
 			    	$entry = i;
 			    }
 			}
 
-			$scope.sellPrice = $scope.myPortfolio[$entry].ask*$scope.quanity;
-			$scope.cash = $scope.cash - $scope.paidPrice;
+			$scope.cash += $scope.bid * $scope.quanity;
+			$scope.message = "";
 
-			if($newStock){
-				console.log("Cant sell what you dont have");
+			if($scope.newStock){
+				$scope.message = "You'll need to buy stock before you can trade them";
+
 			} else {
 				if($scope.myPortfolio[$entry].quanity >= $scope.quanity){
-					$scope.myPortfolio[$entry].quanity -= parseInt($scope.quanity);
+					$scope.myPortfolio[$entry].quanity -= Number($scope.quanity);
+					$scope.message = "";
 					if($scope.myPortfolio[$entry].quanity == 0){
 						$scope.myPortfolio.splice($entry, 1);
 					}
 				} else{
-					console.log("you dont have enough to sell that much");
+					$scope.message = "you dont have enough quanity to sell that much";
 				}
 				
 			}
 
-			$newStock = true;
+			$scope.newStock = true;
 			console.log($scope.myPortfolio);
+		} else {
+			$scope.message = "You'll need to buy stock before you can trade them";
 		}
 		
 	}
